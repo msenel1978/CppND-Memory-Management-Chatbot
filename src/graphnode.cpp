@@ -10,9 +10,9 @@ GraphNode::~GraphNode()
 {
     //// STUDENT CODE
     ////
-
+    /* double delete, hence causing an issue upon exiting the prgram 
     delete _chatBot; 
-
+    */
     ////
     //// EOF STUDENT CODE
 }
