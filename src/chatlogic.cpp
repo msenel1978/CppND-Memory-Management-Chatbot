@@ -73,6 +73,7 @@ void ChatLogic::AddAllTokensToElement(std::string tokenID, tokenlist &tokens, T 
 
 void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 {
+    std::cout << "ChatLogic::LoadAnswerGraphFromFile" << "\n";
     // load file with answer graph elements
     std::ifstream file(filename);
 
@@ -225,6 +226,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
 void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
 {
+    std::cout << "ChatLogic::SetPanelDialogHandle" << "\n";
     _panelDialog = panelDialog;
 }
 
