@@ -45,12 +45,18 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 ChatBot::ChatBot(const ChatBot &source) { // 2 : copy constructor
-        *_image = *source._image;
-        *_currentNode = *source._currentNode;
-        *_rootNode = *source._rootNode;
-        *_chatLogic = *source._chatLogic;
-        std::cout << "ChatBot COPY CONSTRUCTOR: content of instance " << &source\
-                    << " to instance " << this << std::endl;
+
+    std::cout << "ChatBot COPY CONSTRUCTOR: content of instance " << &source\
+                << " to instance " << this << std::endl;
+
+    _image = new wxBitmap();
+    *_image = *source._image;
+
+    *_rootNode = *source._rootNode;
+
+    *_chatLogic = *source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+
     }
 
 // TODO: This is prpbably wrong
@@ -61,11 +67,12 @@ ChatBot &ChatBot::operator=(const ChatBot &source) { // 3 : copy assignment oper
     if (this == &source)
         return *this;
 
-    _image = nullptr;
+    _image = new wxBitmap();
     *_image = *source._image;
 
     _chatLogic = nullptr;
     *_chatLogic = *source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
 
     _rootNode = nullptr;
     *_rootNode = *source._rootNode;
