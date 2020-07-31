@@ -44,6 +44,73 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+ChatBot::ChatBot(const ChatBot &source) { // 2 : copy constructor
+        *_image = *source._image;
+        *_currentNode = *source._currentNode;
+        *_rootNode = *source._rootNode;
+        *_chatLogic = *source._chatLogic;
+        std::cout << "ChatBot COPY CONSTRUCTOR: content of instance " << &source\
+                    << " to instance " << this << std::endl;
+    }
+
+// TODO: This is prpbably wrong
+ChatBot &ChatBot::operator=(const ChatBot &source) { // 3 : copy assignment operator
+    std::cout << "ChatBot COPY ASSIGNMENT: content of instance " << &source\
+                << " to instance " << this << std::endl;
+
+    if (this == &source)
+        return *this;
+
+    _image = nullptr;
+    *_image = *source._image;
+
+    _chatLogic = nullptr;
+    *_chatLogic = *source._chatLogic;
+
+    _rootNode = nullptr;
+    *_rootNode = *source._rootNode;
+
+    return *this;
+}
+
+ChatBot::ChatBot(ChatBot &&source) { // 4 : move constructor
+        std::cout << "ChatBot MOVE CONSTRUCTOR: " << &source << " to instance " << this << std::endl;
+
+        _image = source._image;
+        _currentNode = source._currentNode;
+        _rootNode = source._rootNode;
+        _chatLogic = source._chatLogic;
+
+
+        source._image = nullptr;
+        source._currentNode = nullptr;
+        source._rootNode = nullptr;
+        source._chatLogic = nullptr;
+}
+
+ChatBot &ChatBot::operator=(ChatBot &&source){ // 5 : move assignment operator
+
+    std::cout << "ChatBot MOVING (ASSIGN) instance " << &source\
+                << " to instance " << this << std::endl;
+    if (this == &source)
+        return *this;
+
+    _image = nullptr;
+    _chatLogic = nullptr;
+    _rootNode = nullptr;
+
+    _image = source._image;
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _chatLogic = source._chatLogic;
+
+    source._image = nullptr;
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._chatLogic = nullptr;
+
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
