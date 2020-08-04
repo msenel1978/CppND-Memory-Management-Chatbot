@@ -52,8 +52,9 @@ ChatBot::ChatBot(const ChatBot &source) { // 2 : copy constructor
     _image = new wxBitmap();
     *_image = *source._image;
 
-    _rootNode = new GraphNode(source._currentNode->GetID());
-    *_rootNode = *source._rootNode;
+    // shallow copy here, because _childEdges in GraphNode class
+    // is a vector of unique_ptr
+    _rootNode = source._rootNode;
 
     // shallow copy here, because _nodes in ChatLogic class
     // is a vector of unique_ptr
@@ -73,8 +74,9 @@ ChatBot &ChatBot::operator=(const ChatBot &source) { // 3 : copy assignment oper
     _image = new wxBitmap();
     *_image = *source._image;
 
-    _rootNode = new GraphNode(source._currentNode->GetID());
-    *_rootNode = *source._rootNode;
+    // shallow copy here, because _childEdges in GraphNode class
+    // is a vector of unique_ptr
+    _rootNode = source._rootNode;
 
     // shallow copy here, because _nodes in ChatLogic class
     // is a vector of unique_ptr

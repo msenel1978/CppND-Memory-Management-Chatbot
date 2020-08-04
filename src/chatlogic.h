@@ -21,7 +21,9 @@ private:
 
     // data handles (owned)
     vector<unique_ptr<GraphNode>> _nodes;
-    vector<GraphEdge *> _edges;
+
+    // Task 4: GraphNode instances own edges
+    //vector<unique_ptr<GraphEdge>> _edges;
 
     ////
     //// EOF STUDENT CODE

@@ -11,6 +11,8 @@
 #include "chatbot.h"
 #include "chatlogic.h"
 
+using std::unique_ptr;
+
 
 ChatLogic::ChatLogic()
 {
@@ -37,19 +39,20 @@ ChatLogic::~ChatLogic()
     // delete chatbot instance
     delete _chatBot;
 
+    /* Task 1:  vector<unique_ptr> -> Not needed anymore
     // delete all nodes
-    /*
     for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
     {
         delete *it;
     }
     */
 
-    // delete all edges
+    /* Task 4: Instances of GraphEdge are owned by instances of GraphNode
     for (auto it = std::begin(_edges); it != std::end(_edges); ++it)
     {
         delete *it;
     }
+    */
 
     ////
     //// EOF STUDENT CODE
@@ -162,21 +165,30 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                         if (parentToken != tokens.end() && childToken != tokens.end())
                         {
                             // get iterator on incoming and outgoing node via ID search
-                            auto parentNode = std::find_if(_nodes.begin(), _nodes.end(), [&parentToken](const std::unique_ptr<GraphNode> &node) { return node->GetID() == std::stoi(parentToken->second); });
-                            auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](const std::unique_ptr<GraphNode> &node) { return node->GetID() == std::stoi(childToken->second); });
+                            auto parentNode = std::find_if(_nodes.begin(), _nodes.end(), [&parentToken](const unique_ptr<GraphNode> &node) { return node->GetID() == std::stoi(parentToken->second); });
+                            auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](const unique_ptr<GraphNode> &node) { return node->GetID() == std::stoi(childToken->second); });
 
                             // create new edge
-                            GraphEdge *edge = new GraphEdge(id);
+                            // Solved with the help of Udacity knowledge-base:
+                            // https://knowledge.udacity.com/questions/127748
+                            unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
                             edge->SetChildNode(childNode->get());
                             edge->SetParentNode(parentNode->get());
-                            _edges.push_back(edge);
+
+                            // Task 4: GraphNode instances own edges
+                            //_edges.push_back(edge);
 
                             // find all keywords for current node
                             AddAllTokensToElement("KEYWORD", tokens, *edge);
 
                             // store reference in child node and parent node
-                            (*childNode)->AddEdgeToParentNode(edge);
-                            (*parentNode)->AddEdgeToChildNode(edge);
+                            // HERE
+                            /*
+                            childNode->get()->AddEdgeToParentNode(edge.get());
+                            parentNode->get()->AddEdgeToChildNode(std::move(edge));
+                            */
+                            (*childNode)->AddEdgeToParentNode(edge.get());
+                            (*parentNode)->AddEdgeToChildNode(std::move(edge));
                         }
 
                         ////
