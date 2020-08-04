@@ -52,9 +52,12 @@ ChatBot::ChatBot(const ChatBot &source) { // 2 : copy constructor
     _image = new wxBitmap();
     *_image = *source._image;
 
+    _rootNode = new GraphNode(source._currentNode->GetID());
     *_rootNode = *source._rootNode;
 
-    *_chatLogic = *source._chatLogic;
+    // shallow copy here, because _nodes in ChatLogic class
+    // is a vector of unique_ptr
+    _chatLogic = source._chatLogic;
     _chatLogic->SetChatbotHandle(this);
 
     }
@@ -70,29 +73,31 @@ ChatBot &ChatBot::operator=(const ChatBot &source) { // 3 : copy assignment oper
     _image = new wxBitmap();
     *_image = *source._image;
 
-    _chatLogic = nullptr;
-    *_chatLogic = *source._chatLogic;
-    _chatLogic->SetChatbotHandle(this);
-
-    _rootNode = nullptr;
+    _rootNode = new GraphNode(source._currentNode->GetID());
     *_rootNode = *source._rootNode;
+
+    // shallow copy here, because _nodes in ChatLogic class
+    // is a vector of unique_ptr
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
 
     return *this;
 }
 
 ChatBot::ChatBot(ChatBot &&source) { // 4 : move constructor
-        std::cout << "ChatBot MOVE CONSTRUCTOR: " << &source << " to instance " << this << std::endl;
 
-        _image = source._image;
-        _currentNode = source._currentNode;
-        _rootNode = source._rootNode;
-        _chatLogic = source._chatLogic;
+    std::cout << "ChatBot MOVE CONSTRUCTOR: " << &source << " to instance " << this << std::endl;
+
+    _image = source._image;
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _chatLogic = source._chatLogic;
 
 
-        source._image = nullptr;
-        source._currentNode = nullptr;
-        source._rootNode = nullptr;
-        source._chatLogic = nullptr;
+    source._image = nullptr;
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._chatLogic = nullptr;
 }
 
 ChatBot &ChatBot::operator=(ChatBot &&source){ // 5 : move assignment operator
