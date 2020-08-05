@@ -89,7 +89,12 @@ ChatBot::ChatBot(ChatBot &&source) { // 4 : move constructor
 
     std::cout << "ChatBot MOVE CONSTRUCTOR: " << &source << " to instance " << this << std::endl;
 
+    if (!_image) {
+	  delete _image;
+	  _image = NULL;
+    }
     _image = source._image;
+
     _currentNode = source._currentNode;
     _rootNode = source._rootNode;
 
@@ -110,7 +115,11 @@ ChatBot &ChatBot::operator=(ChatBot &&source){ // 5 : move assignment operator
     if (this == &source)
         return *this;
 
-    _image = nullptr;
+    if (!_image) {
+	  delete _image;
+	  _image = NULL;
+    }
+
     _chatLogic = nullptr;
     _rootNode = nullptr;
 
