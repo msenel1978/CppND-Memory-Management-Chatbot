@@ -3,8 +3,8 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include "chatbot.h"
-
 
 // forward declarations
 class GraphEdge;
