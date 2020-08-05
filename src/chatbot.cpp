@@ -63,7 +63,6 @@ ChatBot::ChatBot(const ChatBot &source) { // 2 : copy constructor
 
     }
 
-// TODO: This is prpbably wrong
 ChatBot &ChatBot::operator=(const ChatBot &source) { // 3 : copy assignment operator
     std::cout << "ChatBot COPY ASSIGNMENT: content of instance " << &source\
                 << " to instance " << this << std::endl;
@@ -93,7 +92,9 @@ ChatBot::ChatBot(ChatBot &&source) { // 4 : move constructor
     _image = source._image;
     _currentNode = source._currentNode;
     _rootNode = source._rootNode;
+
     _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
 
 
     source._image = nullptr;
@@ -116,7 +117,9 @@ ChatBot &ChatBot::operator=(ChatBot &&source){ // 5 : move assignment operator
     _image = source._image;
     _currentNode = source._currentNode;
     _rootNode = source._rootNode;
+
     _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
 
     source._image = nullptr;
     source._currentNode = nullptr;
